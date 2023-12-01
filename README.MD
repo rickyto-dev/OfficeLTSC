@@ -4,7 +4,7 @@
 
 - > La aplicación esta disponible para los siguientes sistemas operativos.
 
-  <img src='%E7%94%BB%E5%83%8F/windows.png' onclick='https://www.microsoft.com/es-es/software-download/windows10'>
+  [![Windows](%E7%94%BB%E5%83%8F/windows.png)](https://www.microsoft.com/es-es/software-download/windows10)
 
 # APLICACIÓN QUE VE EL USUARIO PARA INSTALAR
 
