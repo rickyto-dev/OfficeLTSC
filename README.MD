@@ -1,18 +1,12 @@
-#
-
-# 🖥️ OFFICE LTSC | INSTALADOR 🖥️
+# OFFICE LTSC | INSTALADOR
 
 - > Esta es una aplicación que su propósito general es la instalación visual del Office totalmente legal pero este solo tiene la version LTSC osea la aplicación que estas poniendo es el Office LTSC, la cual presenta un problema que ha sido resuelto con esta aplicación ya que también esta creada la aplicación del reactivador para que al momento que se te desactive la puedas activar de manera automática presionando un solo click.
 
-#
-
-# 🗂️ APLICACIÓN QUE VE EL USUARIO PARA INSTALAR 🗂️
+# APLICACIÓN QUE VE EL USUARIO PARA INSTALAR
 
 <img src='office_app.png'>
 
-#
-
-# 🗒️ PASOS PARA INSTALAR EL OFFICE DE MANERA MANUAL 🗒️
+# PASOS PARA INSTALAR EL OFFICE DE MANERA MANUAL
 
 > 1. Abre un navegador he ingresa la siguiente URL para descargar el Office LTSC.
 
@@ -44,13 +38,13 @@ setup /configure /config.xml
 
 #
 
-# 🗂️ APLICACIÓN QUE VE EL USUARIO PARA REACTIVAR 🗂️
+# APLICACIÓN QUE VE EL USUARIO PARA REACTIVAR
 
 <img src='office_reactivador_app.png'>
 
 #
 
-# 🗒️ PASOS PARA REACTIVAR EL OFFICE DE MANERA MANUAL 🗒️
+# PASOS PARA REACTIVAR EL OFFICE DE MANERA MANUAL
 
 > 1. Abre el buscador de archivos y copea y pega en la barra de direcciones la siguiente ruta
 
