@@ -2,6 +2,10 @@
 
 - > Esta es una aplicación que su propósito general es la instalación visual del Office totalmente legal pero este solo tiene la version LTSC osea la aplicación que estas poniendo es el Office LTSC, la cual presenta un problema que ha sido resuelto con esta aplicación ya que también esta creada la aplicación del reactivador para que al momento que se te desactive la puedas activar de manera automática presionando un solo click.
 
+- > La aplicación esta disponible para los siguientes sistemas operativos.
+
+  <img src='%E7%94%BB%E5%83%8F/windows.png' onclick='https://www.microsoft.com/es-es/software-download/windows10'>
+
 # APLICACIÓN QUE VE EL USUARIO PARA INSTALAR
 
 <img src='office_app.png'>
