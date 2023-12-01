@@ -34,7 +34,7 @@ setup /configure /config.xml
 
 > 7.  Listo cierra todas las ventanas y desinstala el directorio.
 
-#### - `Nota: Con esto no estas asegurado y no tendrás acceso a la aplicación para reactivar el Office LTSC nuevamente si este llegase a desinstalarse.`
+#### - `Nota: Con esto no estas asegurado de que no se te desactive el office y no tendrás acceso a la aplicación para reactivar el Office LTSC nuevamente si este llegase a desactivarse la paquetería de office.`
 
 #
 
