@@ -34,7 +34,7 @@ setup /configure /config.xml
 
 > 7.  Listo cierra todas las ventanas y desinstala el directorio.
 
-### - `Nota: Con esto no estas asegurado y no tendrás acceso a la aplicación para activar el Office LTSC nuevamente si este llegase a desinstalarse.`
+#### - `Nota: Con esto no estas asegurado y no tendrás acceso a la aplicación para reactivar el Office LTSC nuevamente si este llegase a desinstalarse.`
 
 #
 
@@ -58,4 +58,4 @@ C:\Program Files\Microsoft Office\Office16
 
 > 4. (Opcional) Reinicia tu computadora para que no aya ningún inconveniente al abrir la paquetería de Office LTSC activado.
 
-### - `Nota: Este paso se tiene que hacer si ya tienes el office en tu dispositivo y se te aya desactivado de lo contrario no lo tienes que hacer.`
+#### - `Nota: Este paso se tiene que hacer si ya tienes el office en tu dispositivo y se te aya desactivado de lo contrario no lo tienes que hacer.`
