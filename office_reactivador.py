@@ -1,9 +1,51 @@
 from tkinter import Tk, ttk, PhotoImage, Label, Text, Scrollbar, messagebox
 import subprocess
+import os
+
+try:
+    icon_img = (
+        "C:/Program Files/Microsoft Office/Office16/images/office_reactivador.ico"
+    )
+    if not os.path.isfile(icon_img):
+        raise FileNotFoundError
+except FileNotFoundError:
+    icon_img = "images/office_reactivador.ico"
+
+try:
+    logo_img_path = "C:/Program Files/Microsoft Office/Office16/images/logo.png"
+    if not os.path.isfile(logo_img_path):
+        raise FileNotFoundError
+except FileNotFoundError:
+    logo_img_path = "images/logo.png"
+
+try:
+    windows_img_path = "C:/Program Files/Microsoft Office/Office16/images/windows.png"
+    if not os.path.isfile(windows_img_path):
+        raise FileNotFoundError
+except FileNotFoundError:
+    windows_img_path = "images/windows.png"
+
+try:
+    terms_path = (
+        "C:/Program Files/Microsoft Office/Office16/documents/LicenseReactivador.txt"
+    )
+    if not os.path.isfile(terms_path):
+        raise FileNotFoundError
+except FileNotFoundError:
+    terms_path = "documents/LicenseReactivador.txt"
+
+try:
+    reactive_img_path = (
+        "C:/Program Files/Microsoft Office/Office16/images/reactivar.png"
+    )
+    if not os.path.isfile(reactive_img_path):
+        raise FileNotFoundError
+except FileNotFoundError:
+    reactive_img_path = "images/reactivar.png"
 
 
 # leer términos y condiciones de la aplicación
-with open(f"ライセンス/LIcenseActivador.txt", "r", encoding="utf-8") as _license:
+with open(terms_path, "r", encoding="utf-8") as _license:
     LicenseOfficeActivador = _license.read()
 
 
@@ -32,7 +74,7 @@ class Main:
         window.withdraw()
         center_window(window, 450, 460)
         window.title("Office LTSC  |  Reactivador")
-        window.iconbitmap("画像/office_activador.ico")
+        window.iconbitmap(icon_img)
         window.resizable(False, False)
         window.config(background="white")
         # información
@@ -43,7 +85,7 @@ class Main:
         )
         _linea_superior.place(width=650, height=1, y=70)
         ### > logo del panel superior
-        _office_img = PhotoImage(file=r"画像/logo.png")
+        _office_img = PhotoImage(file=logo_img_path)
         _office = Label(window, image=_office_img, borderwidth=0, background="white")
         _office.place(x=5, y=3)
         ### > información
@@ -81,7 +123,7 @@ class Main:
         _term_condiciones.place(width=382, height=250, x=25, y=90)
         _scrollbar.place(width=18, height=250, x=405, y=90)
         ## botón para reactivar office
-        _reactivar_office_img = PhotoImage(file=r"画像/activar.png")
+        _reactivar_office_img = PhotoImage(file=reactive_img_path)
         _reactivar_office = ttk.Button(
             window,
             image=_reactivar_office_img,
@@ -108,7 +150,7 @@ class Main:
         )
         _reactivar_office.place(x=280, y=370)
         ## imagen de windows
-        window_img = PhotoImage(file=r"画像/windows.png")
+        window_img = PhotoImage(file=windows_img_path)
         window_label = Label(window, image=window_img, background="white")
         window_label.place(x=15, y=405)
         # mostrar la ventana
