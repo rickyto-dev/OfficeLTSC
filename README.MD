@@ -4,7 +4,7 @@
 
 - > La aplicación esta disponible para los siguientes sistemas operativos :
 
-  [![Windows](%E7%94%BB%E5%83%8F/windows.png)](https://www.microsoft.com/es-es/software-download/windows10)
+  [![Windows](images/windows.png)](https://www.microsoft.com/es-es/software-download/windows10)
 
 - > Si quires apoyar a la creación de las aplicaciones y para futuros proyectos agradecería que donaras a mi link de PayPal :
 
