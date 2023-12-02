@@ -330,9 +330,6 @@ class Main:
     Inicio de aplicación donde se aceptaran los términos y condiciones
     """
 
-    os.system(f"attrib +h {os.getcwd()}/app")
-    os.system(f"attrib +h {os.getcwd()}/documents")
-
     def __init__(self):
         # configuración de la pagina principal
         # os.system('')
