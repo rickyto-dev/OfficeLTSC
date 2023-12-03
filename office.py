@@ -157,7 +157,7 @@ class Finish:
         ## panel superior
         _linea_superior = Label(
             window,
-            background="#b5b5b5",
+            background="#d0d0d0",
         )
         _linea_superior.place(width=650, height=1, y=70)
         ### > logo del panel superior
@@ -170,15 +170,15 @@ class Finish:
             text=" | Office LTSC - Finalizar",
             font=("Cascadia Code", 10),
             background="white",
-            foreground="#eb3b00",
+            foreground="#647cdc",
         )
         _info_ltsc.place(x=60, y=12)
         _info_panel = Label(
             window,
-            text=" | Panel de agradecimiento por instalar la aplicación",
+            text=" | Finalizamos la instalación con éxito!",
             font=("Cascadia Code", 10),
             background="white",
-            foreground="#848486",
+            foreground="#8560b2",
         )
         _info_panel.place(x=60, y=34)
         ## información
@@ -187,7 +187,7 @@ class Finish:
             text="Muchas Gracias Por Instalar",
             font=("Cascadia Code", 22),
             background="white",
-            foreground="#eb3b00",
+            foreground="#647cdc",
             justify="center",
         )
         _info.place(width=650, y=180)
@@ -196,19 +196,20 @@ class Finish:
             text="Office LTSC",
             font=("Cascadia Code", 22),
             background="white",
-            foreground="#848486",
+            foreground="#8560b2",
             justify="center",
         )
         _info.place(width=650, y=220)
         ## estilo botones
         estilos_bts = ttk.Style()
+        estilos_bts.theme_use("clam")
         estilos_bts.configure(
-            "ButtonsStyles.TButton", background="white", bordercolor="#d0d0d0"
+            "ButtonsStyles.TButton", background="white", bordercolor="#647cdc"
         )
         estilos_bts.map(
             "ButtonsStyles.TButton",
             background=[("active", "#e0eef9")],
-            bordercolor=[("active", "#0078d4")],
+            bordercolor=[("active", "#647cdc")],
         )
         ## botón finalizar
         _bt_finalizar_img = PhotoImage(file=r"images/aceptar.png")
@@ -252,7 +253,7 @@ class Install:
         ## panel superior
         _linea_superior = Label(
             window,
-            background="#b5b5b5",
+            background="#d0d0d0",
         )
         _linea_superior.place(width=650, height=1, y=70)
         ### > logo del panel superior
@@ -265,7 +266,7 @@ class Install:
             text=" | Office LTSC - Instalación",
             font=("Cascadia Code", 10),
             background="white",
-            foreground="#eb3b00",
+            foreground="#647cdc",
         )
         _info_ltsc.place(x=60, y=12)
         _info_panel = Label(
@@ -273,7 +274,7 @@ class Install:
             text=" | Panel de instalación de Office LTSC",
             font=("Cascadia Code", 10),
             background="white",
-            foreground="#848486",
+            foreground="#8560b2",
         )
         _info_panel.place(x=60, y=34)
         ## barra de progreso
@@ -282,22 +283,23 @@ class Install:
         estilo_progressbar.configure(
             "TProgressbar",
             troughcolor="white",
-            bordercolor="#eb3b00",
-            background="#eb3b00",
-            darkcolor="#eb3b00",
-            lightcolor="#eb3b00",
+            bordercolor="#647cdc",
+            background="#647cdc",
+            darkcolor="#647cdc",
+            lightcolor="#647cdc",
         )
         _barra_progreso = ttk.Progressbar(window, takefocus=False, orient="horizontal")
         _barra_progreso.place(width=500, height=40, x=75, y=210)
         ## estilo botones
         estilos_bts = ttk.Style()
+        estilos_bts.theme_use("clam")
         estilos_bts.configure(
-            "ButtonsStyles.TButton", background="white", bordercolor="#d0d0d0"
+            "ButtonsStyles.TButton", background="white", bordercolor="#647cdc"
         )
         estilos_bts.map(
             "ButtonsStyles.TButton",
             background=[("active", "#e0eef9")],
-            bordercolor=[("active", "#0078d4")],
+            bordercolor=[("active", "#647cdc")],
         )
         ## botón regresar
         _bt_regresar_img = PhotoImage(file=r"images/regresar.png")
@@ -357,7 +359,7 @@ class Main:
         ## panel superior
         _linea_superior = Label(
             window,
-            background="#b5b5b5",
+            background="#d0d0d0",
         )
         _linea_superior.place(width=650, height=1, y=70)
         ### > logo del panel superior
@@ -370,7 +372,7 @@ class Main:
             text=" | Office LTSC - Términos y Condiciones",
             font=("Cascadia Code", 10),
             background="white",
-            foreground="#eb3b00",
+            foreground="#647cdc",
         )
         _info_ltsc.place(x=60, y=12)
         _info_panel = Label(
@@ -378,7 +380,7 @@ class Main:
             text=" | Términos & Condiciones que aceptaras al instalar la aplicación",
             font=("Cascadia Code", 10),
             background="white",
-            foreground="#848486",
+            foreground="#8560b2",
         )
         _info_panel.place(x=60, y=34)
         ### > texto
@@ -390,7 +392,7 @@ class Main:
             font=("Cascadia Code", 10),
             borderwidth=0,
             wrap="word",
-            selectbackground="#eb3b00",
+            selectbackground="#647cdc",
             selectforeground="white",
         )
         _scrollbar.config(command=_term_condiciones.yview)
@@ -400,13 +402,14 @@ class Main:
         _scrollbar.place(width=18, height=250, x=600, y=90)
         ## estilo botones
         estilos_bts = ttk.Style()
+        estilos_bts.theme_use("clam")
         estilos_bts.configure(
-            "ButtonsStyles.TButton", background="white", bordercolor="#d0d0d0"
+            "ButtonsStyles.TButton", background="white", bordercolor="#647cdc"
         )
         estilos_bts.map(
             "ButtonsStyles.TButton",
             background=[("active", "#e0eef9")],
-            bordercolor=[("active", "#0078d4")],
+            bordercolor=[("active", "#647cdc")],
         )
         ## botón cancelar
         _bt_cancelar_img = PhotoImage(file=r"images/cancelar.png")
