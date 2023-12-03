@@ -122,6 +122,16 @@ class Main:
         _term_condiciones.config(yscrollcommand=_scrollbar.set, state="disabled")
         _term_condiciones.place(width=382, height=250, x=25, y=90)
         _scrollbar.place(width=18, height=250, x=405, y=90)
+        ## estilo botones
+        estilos_bts = ttk.Style()
+        estilos_bts.configure(
+            "ButtonsStyles.TButton", background="white", bordercolor="#d0d0d0"
+        )
+        estilos_bts.map(
+            "ButtonsStyles.TButton",
+            background=[("active", "#e0eef9")],
+            bordercolor=[("active", "#0078d4")],
+        )
         ## botón para reactivar office
         _reactivar_office_img = PhotoImage(file=reactive_img_path)
         _reactivar_office = ttk.Button(
@@ -131,6 +141,7 @@ class Main:
             text="Reactivar",
             cursor="hand2",
             takefocus=False,
+            style="ButtonsStyles.TButton",
             padding=(20, 15, 20, 15),
             command=lambda: [
                 {

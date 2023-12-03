@@ -200,6 +200,16 @@ class Finish:
             justify="center",
         )
         _info.place(width=650, y=220)
+        ## estilo botones
+        estilos_bts = ttk.Style()
+        estilos_bts.configure(
+            "ButtonsStyles.TButton", background="white", bordercolor="#d0d0d0"
+        )
+        estilos_bts.map(
+            "ButtonsStyles.TButton",
+            background=[("active", "#e0eef9")],
+            bordercolor=[("active", "#0078d4")],
+        )
         ## botón finalizar
         _bt_finalizar_img = PhotoImage(file=r"images/aceptar.png")
         _bt_finalizar = ttk.Button(
@@ -210,6 +220,7 @@ class Finish:
             padding=(20, 15, 20, 15),
             cursor="hand2",
             takefocus=False,
+            state="ButtonsStyles.TButton",
             command=lambda: [{window.destroy(), sys.exit()}],
         )
         _bt_finalizar.place(x=480, y=365)
@@ -334,8 +345,7 @@ class Main:
     """
 
     def __init__(self):
-        # configuración de la pagina principal
-        # os.system('')
+        # configuración de pagina principal
         window = Tk()
         window.withdraw()
         window.iconbitmap("images/office.ico")
@@ -388,6 +398,16 @@ class Main:
         _term_condiciones.config(yscrollcommand=_scrollbar.set, state="disabled")
         _term_condiciones.place(width=576, height=250, x=25, y=90)
         _scrollbar.place(width=18, height=250, x=600, y=90)
+        ## estilo botones
+        estilos_bts = ttk.Style()
+        estilos_bts.configure(
+            "ButtonsStyles.TButton", background="white", bordercolor="#d0d0d0"
+        )
+        estilos_bts.map(
+            "ButtonsStyles.TButton",
+            background=[("active", "#e0eef9")],
+            bordercolor=[("active", "#0078d4")],
+        )
         ## botón cancelar
         _bt_cancelar_img = PhotoImage(file=r"images/cancelar.png")
         _bt_cancelar = ttk.Button(
@@ -398,6 +418,7 @@ class Main:
             padding=(20, 15, 20, 15),
             cursor="hand2",
             takefocus=False,
+            style="ButtonsStyles.TButton",
             command=lambda: [{sys.exit()}],
         )
         _bt_cancelar.place(x=320, y=365)
@@ -410,6 +431,7 @@ class Main:
             text="Aceptar",
             padding=(20, 15, 20, 15),
             cursor="hand2",
+            style="ButtonsStyles.TButton",
             takefocus=False,
             command=lambda: [{window.destroy(), Install()}],
         )
