@@ -221,7 +221,7 @@ class Finish:
             padding=(20, 15, 20, 15),
             cursor="hand2",
             takefocus=False,
-            state="ButtonsStyles.TButton",
+            style="ButtonsStyles.TButton",
             command=lambda: [{window.destroy(), sys.exit()}],
         )
         _bt_finalizar.place(x=480, y=365)
@@ -449,4 +449,4 @@ class Main:
 
 
 if __name__ == "__main__":
-    Main()
+    Install()
