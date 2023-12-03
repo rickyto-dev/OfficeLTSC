@@ -16,7 +16,7 @@
 
 - > Presiona el siguiente link para instalar el instalador de Office LTSC
 
-  https://github.com/rickyto-dev/OfficeLTSC/releases/tag/realses
+  https://github.com/rickyto-dev/OfficeLTSC/releases
 
 #
 
