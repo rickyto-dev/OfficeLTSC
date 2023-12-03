@@ -61,7 +61,6 @@ def instalar(win: any, progress: any, bt_inst: any, bt_reg: any):
                 _documentos = f"{_office_path}/office-reactivador/documents"
                 _app_path = f"{_office_path}/OfficeLTSC Reactivador.exe"
                 _name_link = "OfficeLTSC Reactivador.lnk"
-                _menu_app = "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/"
                 _menu_escritorio = f"C:/Users/{_usuario}/OneDrive/Escritorio"
                 _images_office = f"{_office_path}images"
                 _documentos_office = f"{_office_path}documents"
@@ -75,6 +74,8 @@ def instalar(win: any, progress: any, bt_inst: any, bt_reg: any):
                     shutil.move(_office_arch_xml, os.getcwd())
                     shutil.rmtree(f"{os.getcwd()}/office-setup", ignore_errors=True)
                     win.destroy()
+                    os.system(f'attrib +h "{os.getcwd()}/setup.exe"')
+                    os.system(f'attrib +h "{os.getcwd()}/config.xml"')
                     time.sleep(1)
                     subprocess.run(_comando_install_office, shell=True)
                     subprocess.run(
@@ -84,6 +85,8 @@ def instalar(win: any, progress: any, bt_inst: any, bt_reg: any):
                         "app/office-reactivador.zip", "r"
                     ) as zip_ref_office_reactivador:
                         zip_ref_office_reactivador.extractall(_office_path)
+                        os.remove(f"setup.exe")
+                        os.remove(f"config.xml")
                         time.sleep(0.2)
                         shutil.move(_exe, _office_path)
                         shutil.move(_images, _office_path)
