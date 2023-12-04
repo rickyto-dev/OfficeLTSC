@@ -1,188 +1,163 @@
-from tkinter import Tk, Label, ttk, PhotoImage, Text, Scrollbar, messagebox
-import sys
-import os
-import shutil
-import getpass
-import zipfile
-import subprocess
-import traceback
-import winshell
-import time
+from tkinter import Tk, Label, ttk, PhotoImage, messagebox, Text, Scrollbar
+import sys, subprocess
 
-# extraer el texto que esta en la LicenseOffice
-with open("documents/LicenseOffice.txt", "r", encoding="utf-8") as _office:
-    LicenseOffice = _office.read()
+descarga = 0
 
 
-# funciones
+# FUNCIONES & ACCIONES QUE REALIZARA LA APLICACIÓN
 def center_window(win: any, ancho: int, alto: int):
     """
     Función para centrar todas la ventas
     """
-    #  win     =>   ! es la ventana que usaremos para la configuración y poder cambiarle la posición
-    #  ancho   =>   ! es el ancho de la ventana
-    #  alto    =>   ! es el alto de la ventana
+
+    #  win     =>   ! ES LA VENTANA QUE CAMBIAREMOS DE POSICIÓN
+    #  ancho   =>   ! ES EL ANCHO DE LA VENTANA
+    #  alto    =>   ! ES EL ALTO DE LA VENTANA
+
     x = (win.winfo_screenwidth() - ancho) // 2
     y = (win.winfo_screenheight() - alto) // 2
     win.geometry(f"{ancho}x{alto}+{x}+{y}")
 
 
-def instalar(win: any, progress: any, bt_inst: any, bt_reg: any):
+def exit_app():
+    """
+    Muestra una ventana donde se le pregunta al usuario si quiere terminar la instalación
+    """
+
+    mensaje = messagebox.askquestion(
+        "Cuidado la Instalación a sido Interrumpida",
+        "Estas seguro que quieres salir de la instalación ??",
+        # MENSAJE QUE SE MOSTRARA AL USUARIO
+        icon="warning",
+    )
+    if mensaje == "yes":
+        # SI SE OBTIENE QUE EL USUARIO PRESIONO EL BOTÓN QUE SI QUISO SALIR, SE CERRARA TODA LA APLICACIÓN
+        sys.exit()
+    # SI EL USUARIO PRESIONO QUE NO SE REGRESARA A LA VENTA EN DONDE ESTABA
+    else:
+        messagebox.showinfo(
+            "Instalación Exitosa",
+            "Se ha instalado la aplicación de Office LTSC de manera correcta en tu dispositivo Windows",
+        )
+
+
+def instalar(win: any, progress: any, bt_inst: any, bt_reg: any, text_install: int):
     """
     Función para instalar todos los programas
     """
-    #  win        =>   ! es la ventana que se esta mostrando
-    #  progress   =>   ! es la barra de progreso
-    #  bt_inst    =>   ! es el botón para instalar la aplicación
-    #  bt_reg     =>   ! es el botón para regresar al panel de términos y condiciones
+
+    #  win        =>   ! ES LA VENTANA QUE SE MUESTRA AL USUARIO
+    #  progress   =>   ! ES LA BARRA DE PROGRESO
+    #  bt_inst    =>   ! ES EL BOTÓN PARA INSTALAR LA APLICACIÓN
+    #  bt_reg     =>   ! ES EL BOTÓN PARA REGRESAR A LA PAGINA PRINCIPAL
+
+    # GLOBALES
     bt_inst["state"] = "disabled"
     bt_reg["state"] = "disabled"
     bt_inst["cursor"] = "arrow"
     bt_reg["cursor"] = "arrow"
 
     def progress_chargee():
+        """
+        Esta función lo que hace es mover la barra de progreso añadiendo nuevos parámetros
+        """
+
+        # GLOBALES
+        global descarga
+
+        # OBTIENE EL VALOR DE LA BARRA DE PROGRESO
         valor = progress["value"]
+
         if valor < 100:
+            # AGREGAR MAS 20 AL VALOR ACTUAL DE LA BARRA DE PROGRESO
             progress["value"] += 20
+
+            # CAMBIA LA CONFIGURACIÓN DEL ESTADO DEL PORCENTAJE DE INSTALACIÓN
+            descarga += 20
+            text_install.place(x=80, y=195)
+            text_install.config(
+                text=f"Instalando                                              {descarga}%"
+            )
+
+            # ACTUALIZA LA BARRA DE PROGRESO EN EL MOMENTO REAL
             progress.update()
             win.after(1000, progress_chargee)
+
         else:
-            try:
-                messagebox.showinfo(
-                    "Instalación Correcta",
-                    "Se ha instalado el office correctamente preciosa 'Enter' o 'Aceptar' para iniciar la instalación",
-                )
-                # > [ usuario de la computadora ]
-                _usuario = getpass.getuser()
-                # > [ rutas o paths de las ubicaciones a donde se moverán los archivos ]
-                _office_path = f"C:/Program Files/Microsoft Office/Office16/"
-                _exe = f"{_office_path}/office-reactivador/OfficeLTSC Reactivador.exe"
-                _images = f"{_office_path}/office-reactivador/images"
-                _documentos = f"{_office_path}/office-reactivador/documents"
-                _app_path = f"{_office_path}/OfficeLTSC Reactivador.exe"
-                _name_link = "OfficeLTSC Reactivador.lnk"
-                _menu_escritorio = f"C:/Users/{_usuario}/OneDrive/Escritorio"
-                _images_office = f"{_office_path}images"
-                _documentos_office = f"{_office_path}documents"
-                _office_arch_exe = "office-setup/setup.exe"
-                _office_arch_xml = "office-setup/config.xml"
-                _comando_install_office = "setup /configure config.xml"
+            win.destroy()
+            subprocess.check_call(
+                [
+                    "runas",
+                    "/savecred",
+                    "/user:Administrator",
+                    "aplicaciones/OfficeInstallerClienteLTSCServices.exe",
+                ]
+            )
+            Finish()
 
-                with zipfile.ZipFile("app/office-setup.zip", "r") as zip_ref_office:
-                    zip_ref_office.extractall(os.getcwd())
-                    shutil.move(_office_arch_exe, os.getcwd())
-                    shutil.move(_office_arch_xml, os.getcwd())
-                    shutil.rmtree(f"{os.getcwd()}/office-setup", ignore_errors=True)
-                    win.destroy()
-                    os.system(f'attrib +h "{os.getcwd()}/setup.exe"')
-                    os.system(f'attrib +h "{os.getcwd()}/config.xml"')
-                    time.sleep(1)
-                    subprocess.run(_comando_install_office, shell=True)
-                    subprocess.run(
-                        ["taskkill", "/IM", "OfficeC2RClient.exe", "/F"], check=True
-                    )
-                    with zipfile.ZipFile(
-                        "app/office-reactivador.zip", "r"
-                    ) as zip_ref_office_reactivador:
-                        zip_ref_office_reactivador.extractall(_office_path)
-                        os.remove(f"setup.exe")
-                        os.remove(f"config.xml")
-                        time.sleep(0.2)
-                        shutil.move(_exe, _office_path)
-                        shutil.move(_images, _office_path)
-                        shutil.move(_documentos, _office_path)
-                        os.system(f'attrib +h "{_images_office}"')
-                        os.system(f'attrib +h "{_documentos_office}"')
-                        shutil.rmtree(
-                            f"{_office_path}office-reactivador", ignore_errors=True
-                        )
-                    # crear el acceso directo en el escritorio
-                    _ESCRITORIO = os.path.join(_menu_escritorio, _name_link)
-                    _escritorio_comando = f'mklink "{_ESCRITORIO}" "{_app_path}" '
-                    subprocess.run(_escritorio_comando, shell=True)
-                    # crear el acceso directo en el buscador de aplicaciones
-                    winshell.CreateShortcut(
-                        os.path.join(
-                            os.environ["ProgramData"],
-                            "Microsoft",
-                            "Windows",
-                            "Start Menu",
-                            "Programs",
-                            _name_link,
-                        ),
-                        _app_path,
-                    )
-
-                Finish()
-            except Exception as e:
-                traceback_str = traceback.format_exc()
-                messagebox.showerror(
-                    "Error", f"Se ha producido un error:\n\n{traceback_str}"
-                )
-
-    win.protocol(
-        "WM_DELETE_WINDOW",
-        lambda: [
-            {
-                messagebox.showwarning(
-                    "Peligro de Instalación",
-                    "No puedes cerrar esta ventana mientras se esta instalando el programa",
-                )
-            }
-        ],
-    )
+    # INICIAR LA BARRA DE PROGRESO
     progress_chargee()
 
 
-def desempaquetado():
-    pass
+with open("licencias/LicenseOffice.txt", "r", encoding="utf-8") as _licencia:
+    LICENCIA = _licencia.read()
 
 
-# aplicación
+# APLICACIÓN
 class Finish:
     """
-    Inicio de aplicación donde se aceptaran los términos y condiciones
+    Este es el apartado de finalización de la aplicación
     """
 
     def __init__(self):
-        # configuración de la pagina principal
+        ## * CONFIGURACIÓN DE LA VENTANA QUE VERA EL USUARIO * ##
+
         window = Tk()
+        # ESTO HACE QUE LA VENTANA SE OCULTE AL USUARIO AL MOMENTO DE QUE SE INICIALICE
         window.withdraw()
-        window.iconbitmap("images/office.ico")
-        window.title("Office LTSC  |  Instalador")
-        window.resizable(False, False)
+        # TITULO DE LA VENTANA DE LA APLICACIÓN
+        window.title("Office LTSC | Instalador")
+        # AQUÍ ESTA LLAMANDO A LA FUNCIÓN (center_window) PARA CENTRAR LA VENTANA EN MEDIO DE TODA LA PANTALLA DEL USUARIO & LE ESTAMOS PASANDO ALGUNOS VALORES
+        center_window(window, 650, 460)
+        # ICONO DE LA APLICACIÓN
+        window.iconbitmap(f"imagenes/office.ico")
         window.config(background="white")
-        center_window(window, 650, 450)
-        # información
-        ## panel superior
-        _linea_superior = Label(
+        # EN ESTA PARTE ES PARA QUE EL USUARIO NO PUEDA CAMBIAR EL TAMAÑO DE LA VENTANA
+        window.resizable(0, 0)
+
+        ## * PANEL SUPERIOR  * ##
+
+        # SE DIBUJARA UNA LINEA DIVISORA PARA DIVIDIR LA INFORMACIÓN
+        linea_superior = Label(
             window,
-            background="#d0d0d0",
+            background="#647cdc",
         )
-        _linea_superior.place(width=650, height=1, y=70)
-        ### > logo del panel superior
-        _office_img = PhotoImage(file=r"images/logo.png")
-        _office = Label(window, image=_office_img, borderwidth=0, background="white")
-        _office.place(x=5, y=3)
-        ### > información
-        _info_ltsc = Label(
+        linea_superior.place(width=650, height=1, y=70)
+        # SE MUESTRA EL LOGO DE LA APLICACIÓN PARA QUE SEA MAS ENTENDIBLE PARA EL USUARIO
+        office_img = PhotoImage(file=r"imagenes/logo.png")
+        office = Label(window, image=office_img, borderwidth=0, background="white")
+        office.place(x=5, y=3)
+        # SE MUESTRA INFORMACIÓN ALADO DEL LOGO PARA QUE EL USUARIO ENTIENDA EN QUE APARTADO DE ENCUENTRA
+        info_ltsc = Label(
             window,
             text=" | Office LTSC - Finalizar",
             font=("Cascadia Code", 10),
             background="white",
             foreground="#647cdc",
         )
-        _info_ltsc.place(x=60, y=12)
-        _info_panel = Label(
+        info_ltsc.place(x=60, y=12)
+        info_pagina = Label(
             window,
             text=" | Finalizamos la instalación con éxito!",
             font=("Cascadia Code", 10),
             background="white",
             foreground="#8560b2",
         )
-        _info_panel.place(x=60, y=34)
-        ## información
-        _info = Label(
+        info_pagina.place(x=60, y=34)
+
+        ## * TEXTO DE AGRADECIMIENTO * ##
+
+        info = Label(
             window,
             text="Muchas Gracias Por Instalar",
             font=("Cascadia Code", 22),
@@ -190,8 +165,8 @@ class Finish:
             foreground="#647cdc",
             justify="center",
         )
-        _info.place(width=650, y=180)
-        _info = Label(
+        info.place(width=650, y=180)
+        info = Label(
             window,
             text="Office LTSC",
             font=("Cascadia Code", 22),
@@ -199,8 +174,11 @@ class Finish:
             foreground="#8560b2",
             justify="center",
         )
-        _info.place(width=650, y=220)
-        ## estilo botones
+        info.place(width=650, y=230)
+
+        ## * BOTONES * ##
+
+        # ESTILOS DEL BOTÓN FINAL
         estilos_bts = ttk.Style()
         estilos_bts.theme_use("clam")
         estilos_bts.configure(
@@ -211,11 +189,11 @@ class Finish:
             background=[("active", "#e0eef9")],
             bordercolor=[("active", "#647cdc")],
         )
-        ## botón finalizar
-        _bt_finalizar_img = PhotoImage(file=r"images/aceptar.png")
-        _bt_finalizar = ttk.Button(
+        # BOTÓN PARA FINALIZAR
+        bt_finalizar_img = PhotoImage(file=r"imagenes/aceptar.png")
+        bt_finalizar = ttk.Button(
             window,
-            image=_bt_finalizar_img,
+            image=bt_finalizar_img,
             compound="left",
             text="Finalizar",
             padding=(20, 15, 20, 15),
@@ -224,60 +202,80 @@ class Finish:
             style="ButtonsStyles.TButton",
             command=lambda: [{window.destroy(), sys.exit()}],
         )
-        _bt_finalizar.place(x=480, y=365)
-        ## imagen de windows
-        window_img = PhotoImage(file=r"images/windows.png")
-        window_label = Label(window, image=window_img, background="white")
-        window_label.place(x=15, y=400)
-        # mostrar la ventana al usuario
+        bt_finalizar.place(x=480, y=377)
+
+        # FUNCIONES PARA REALIZAR AL MOMENTO QUE EL USUARIO INTENTE CERRAR LA VENTANA
         window.protocol("WM_DELETE_WINDOW", lambda: [{window.destroy(), sys.exit()}])
+
+        # MOSTRAR LA VENTANA CON TODA LA INFORMACIÓN & CON TODA LA CONFIGURACIÓN
         window.deiconify()
         window.mainloop()
 
 
 class Install:
     """
-    Inicio de aplicación donde se aceptaran los términos y condiciones
+    Este es el apartado de instalación
     """
 
     def __init__(self):
-        # configuración de la pagina principal
+        ## * CONFIGURACIÓN DE LA VENTANA QUE VERA EL USUARIO * ##
+
         window = Tk()
+        # ESTO HACE QUE LA VENTANA SE OCULTE AL USUARIO AL MOMENTO DE QUE SE INICIALICE
         window.withdraw()
-        window.iconbitmap("images/office.ico")
-        window.title("Office LTSC  |  Instalador")
-        window.resizable(False, False)
+        # TITULO DE LA VENTANA DE LA APLICACIÓN
+        window.title("Office LTSC | Instalador")
+        # AQUÍ ESTA LLAMANDO A LA FUNCIÓN (center_window) PARA CENTRAR LA VENTANA EN MEDIO DE TODA LA PANTALLA DEL USUARIO & LE ESTAMOS PASANDO ALGUNOS VALORES
+        center_window(window, 650, 460)
+        # ICONO DE LA APLICACIÓN
+        window.iconbitmap(f"imagenes/office.ico")
         window.config(background="white")
-        center_window(window, 650, 450)
-        # información
-        ## panel superior
-        _linea_superior = Label(
+        # EN ESTA PARTE ES PARA QUE EL USUARIO NO PUEDA CAMBIAR EL TAMAÑO DE LA VENTANA
+        window.resizable(0, 0)
+
+        ## * PANEL SUPERIOR  * ##
+
+        # SE DIBUJARA UNA LINEA DIVISORA PARA DIVIDIR LA INFORMACIÓN
+        linea_superior = Label(
             window,
-            background="#d0d0d0",
+            background="#647cdc",
         )
-        _linea_superior.place(width=650, height=1, y=70)
-        ### > logo del panel superior
-        _office_img = PhotoImage(file=r"images/logo.png")
-        _office = Label(window, image=_office_img, borderwidth=0, background="white")
-        _office.place(x=5, y=3)
-        ### > información
-        _info_ltsc = Label(
+        linea_superior.place(width=650, height=1, y=70)
+        # SE MUESTRA EL LOGO DE LA APLICACIÓN PARA QUE SEA MAS ENTENDIBLE PARA EL USUARIO
+        office_img = PhotoImage(file=r"imagenes/logo.png")
+        office = Label(window, image=office_img, borderwidth=0, background="white")
+        office.place(x=5, y=3)
+        # SE MUESTRA INFORMACIÓN ALADO DEL LOGO PARA QUE EL USUARIO ENTIENDA EN QUE APARTADO DE ENCUENTRA
+        info_ltsc = Label(
             window,
-            text=" | Office LTSC - Instalación",
+            text=" | Office LTSC - Office LTSC - Instalación",
             font=("Cascadia Code", 10),
             background="white",
             foreground="#647cdc",
         )
-        _info_ltsc.place(x=60, y=12)
-        _info_panel = Label(
+        info_ltsc.place(x=60, y=12)
+        info_pagina = Label(
             window,
             text=" | Panel de instalación de Office LTSC",
             font=("Cascadia Code", 10),
             background="white",
             foreground="#8560b2",
         )
-        _info_panel.place(x=60, y=34)
-        ## barra de progreso
+        info_pagina.place(x=60, y=34)
+
+        ## * TEXTO DE INSTALACIÓN & PORCENTAJES DE INSTALACIÓN * ##
+
+        # TEXTO DE INSTALACIÓN
+        text_install = Label(
+            window,
+            font=("Cascadia Code", 10),
+            background="white",
+            foreground="#8560b2",
+        )
+
+        ## *  BARRA DE PROGRESO  * ##
+
+        # CONFIGURACIÓN DE LA BARRA DE PROGRESO DONDE SE VERA EL PROGRESO DE INSTALACIÓN
         estilo_progressbar = ttk.Style()
         estilo_progressbar.theme_use("clam")
         estilo_progressbar.configure(
@@ -288,9 +286,12 @@ class Install:
             darkcolor="#647cdc",
             lightcolor="#647cdc",
         )
-        _barra_progreso = ttk.Progressbar(window, takefocus=False, orient="horizontal")
-        _barra_progreso.place(width=500, height=40, x=75, y=210)
-        ## estilo botones
+        barra_progreso = ttk.Progressbar(window, takefocus=False, orient="horizontal")
+        barra_progreso.place(width=500, height=40, x=75, y=220)
+
+        ## *  BOTONES  * ##
+
+        # CONFIGURACIÓN DE LOS ESTILOS DE LOS BOTONES
         estilos_bts = ttk.Style()
         estilos_bts.theme_use("clam")
         estilos_bts.configure(
@@ -301,91 +302,105 @@ class Install:
             background=[("active", "#e0eef9")],
             bordercolor=[("active", "#647cdc")],
         )
-        ## botón regresar
-        _bt_regresar_img = PhotoImage(file=r"images/regresar.png")
-        _bt_regresar = ttk.Button(
+        # BOTÓN PARA REGRESAR A LA PAGINA PRINCIPAL QUE ES EL HOME
+        bt_regresar_img = PhotoImage(file=r"imagenes/regresar.png")
+        bt_regresar = ttk.Button(
             window,
-            image=_bt_regresar_img,
+            image=bt_regresar_img,
             compound="left",
-            text="Regresar",
+            text=" Regresar",
             padding=(20, 15, 20, 15),
             cursor="hand2",
             takefocus=False,
             style="ButtonsStyles.TButton",
-            command=lambda: [{window.destroy(), Main()}],
+            command=lambda: [{window.destroy(), Home()}],
         )
-        _bt_regresar.place(x=320, y=365)
-        ## botón instalar
-        _bt_instalar_img = PhotoImage(file=r"images/descargar.png")
-        _bt_instalar = ttk.Button(
+        bt_regresar.place(x=320, y=377)
+        # BOTÓN DE QUE SE INICIE LA INSTALACIÓN
+        bt_instalar_img = PhotoImage(file=r"imagenes/administrador.png")
+        bt_instalar = ttk.Button(
             window,
-            image=_bt_instalar_img,
+            image=bt_instalar_img,
             compound="left",
-            text="Instalar",
+            text=" Instalar",
             padding=(20, 15, 20, 15),
             cursor="hand2",
             takefocus=False,
             style="ButtonsStyles.TButton",
             command=lambda: [
-                {instalar(window, _barra_progreso, _bt_instalar, _bt_regresar)}
+                {
+                    instalar(
+                        window, barra_progreso, bt_instalar, bt_regresar, text_install
+                    )
+                }
             ],
         )
-        _bt_instalar.place(x=480, y=365)
-        ## imagen de windows
-        window_img = PhotoImage(file=r"images/windows.png")
-        window_label = Label(window, image=window_img, background="white")
-        window_label.place(x=15, y=400)
-        # mostrar la ventana al usuario
-        window.protocol("WM_DELETE_WINDOW", lambda: [{window.destroy(), Main()}])
+        bt_instalar.place(x=480, y=377)
+
+        # FUNCIONES PARA REALIZAR AL MOMENTO QUE EL USUARIO INTENTE CERRAR LA VENTANA
+        window.protocol("WM_DELETE_WINDOW", lambda: [{window.destroy(), Home()}])
+
+        # MOSTRAR LA VENTANA CON TODA LA INFORMACIÓN & CON TODA LA CONFIGURACIÓN
         window.deiconify()
         window.mainloop()
 
 
-class Main:
+class Home:
     """
-    Inicio de aplicación donde se aceptaran los términos y condiciones
+    Esto es lo primero que vera el usuario al iniciar la aplicación
     """
 
     def __init__(self):
-        # configuración de pagina principal
+        ## * CONFIGURACIÓN DE LA VENTANA QUE VERA EL USUARIO * ##
+
         window = Tk()
+        # ESTO HACE QUE LA VENTANA SE OCULTE AL USUARIO AL MOMENTO DE QUE SE INICIALICE
         window.withdraw()
-        window.iconbitmap("images/office.ico")
-        window.title("Office LTSC  |  Instalador")
-        window.resizable(False, False)
+        # TITULO DE LA VENTANA DE LA APLICACIÓN
+        window.title("Office LTSC | Instalador")
+        # AQUÍ ESTA LLAMANDO A LA FUNCIÓN (center_window) PARA CENTRAR LA VENTANA EN MEDIO DE TODA LA PANTALLA DEL USUARIO & LE ESTAMOS PASANDO ALGUNOS VALORES
+        center_window(window, 650, 460)
+        # ICONO DE LA APLICACIÓN
+        window.iconbitmap(f"imagenes/office.ico")
         window.config(background="white")
-        center_window(window, 650, 450)
-        # información
-        ## panel superior
-        _linea_superior = Label(
+        # EN ESTA PARTE ES PARA QUE EL USUARIO NO PUEDA CAMBIAR EL TAMAÑO DE LA VENTANA
+        window.resizable(0, 0)
+
+        ## * PANEL SUPERIOR  * ##
+
+        # SE DIBUJARA UNA LINEA DIVISORA PARA DIVIDIR LA INFORMACIÓN
+        linea_superior = Label(
             window,
-            background="#d0d0d0",
+            background="#647cdc",
         )
-        _linea_superior.place(width=650, height=1, y=70)
-        ### > logo del panel superior
-        _office_img = PhotoImage(file=r"images/logo.png")
-        _office = Label(window, image=_office_img, borderwidth=0, background="white")
-        _office.place(x=5, y=3)
-        ### > información
-        _info_ltsc = Label(
+        linea_superior.place(width=650, height=1, y=70)
+        # SE MUESTRA EL LOGO DE LA APLICACIÓN PARA QUE SEA MAS ENTENDIBLE PARA EL USUARIO
+        office_img = PhotoImage(file=r"imagenes/logo.png")
+        office = Label(window, image=office_img, borderwidth=0, background="white")
+        office.place(x=5, y=3)
+        # SE MUESTRA INFORMACIÓN ALADO DEL LOGO PARA QUE EL USUARIO ENTIENDA EN QUE APARTADO DE ENCUENTRA
+        info_ltsc = Label(
             window,
             text=" | Office LTSC - Términos y Condiciones",
             font=("Cascadia Code", 10),
             background="white",
             foreground="#647cdc",
         )
-        _info_ltsc.place(x=60, y=12)
-        _info_panel = Label(
+        info_ltsc.place(x=60, y=12)
+        info_pagina = Label(
             window,
             text=" | Términos & Condiciones que aceptaras al instalar la aplicación",
             font=("Cascadia Code", 10),
             background="white",
             foreground="#8560b2",
         )
-        _info_panel.place(x=60, y=34)
-        ### > texto
-        _scrollbar = Scrollbar(window, takefocus=False)
-        _term_condiciones = Text(
+        info_pagina.place(x=60, y=34)
+
+        ## *  TEXTO  * ##
+
+        # CONFIGURACIÓN DEL SCROLLBAR Y EL CUADRO DE TEXTO QUE MOSTRARA LA INFORMACIÓN AL USUARIO
+        scrollbar = Scrollbar(window, takefocus=False)
+        term_condiciones = Text(
             window,
             background="#f0f0f0",
             foreground="black",
@@ -395,12 +410,15 @@ class Main:
             selectbackground="#647cdc",
             selectforeground="white",
         )
-        _scrollbar.config(command=_term_condiciones.yview)
-        _term_condiciones.insert("end", f"{LicenseOffice}")
-        _term_condiciones.config(yscrollcommand=_scrollbar.set, state="disabled")
-        _term_condiciones.place(width=576, height=250, x=25, y=90)
-        _scrollbar.place(width=18, height=250, x=600, y=90)
-        ## estilo botones
+        scrollbar.config(command=term_condiciones.yview)
+        term_condiciones.insert("end", f"{LICENCIA}")
+        term_condiciones.config(yscrollcommand=scrollbar.set, state="disabled")
+        term_condiciones.place(width=584, height=250, x=25, y=100)
+        scrollbar.place(width=13, height=250, x=608, y=100)
+
+        ## *  BOTONES  * ##
+
+        # CONFIGURACIÓN DE LOS ESTILOS DE LOS BOTONES
         estilos_bts = ttk.Style()
         estilos_bts.theme_use("clam")
         estilos_bts.configure(
@@ -411,42 +429,42 @@ class Main:
             background=[("active", "#e0eef9")],
             bordercolor=[("active", "#647cdc")],
         )
-        ## botón cancelar
-        _bt_cancelar_img = PhotoImage(file=r"images/cancelar.png")
-        _bt_cancelar = ttk.Button(
+        # BOTÓN PARA CANCELAR LA INSTALACIÓN
+        bt_cancelar_img = PhotoImage(file=r"imagenes/cancelar.png")
+        bt_cancelar = ttk.Button(
             window,
-            image=_bt_cancelar_img,
+            image=bt_cancelar_img,
             compound="left",
-            text="Cancelar",
+            text=" Cancelar",
             padding=(20, 15, 20, 15),
             cursor="hand2",
             takefocus=False,
             style="ButtonsStyles.TButton",
-            command=lambda: [{sys.exit()}],
+            command=lambda: [{exit_app()}],
         )
-        _bt_cancelar.place(x=320, y=365)
-        ## botón aceptar
-        _bt_aceptar_img = PhotoImage(file=r"images/aceptar.png")
-        _bt_aceptar = ttk.Button(
+        bt_cancelar.place(x=320, y=377)
+        # BOTÓN DE QUE SE ACEPTARON LOS TÉRMINOS Y CONDICIONES
+        bt_aceptar_img = PhotoImage(file=r"imagenes/aceptar.png")
+        bt_aceptar = ttk.Button(
             window,
-            image=_bt_aceptar_img,
+            image=bt_aceptar_img,
             compound="left",
-            text="Aceptar",
+            text=" Aceptar",
             padding=(20, 15, 20, 15),
             cursor="hand2",
             style="ButtonsStyles.TButton",
             takefocus=False,
             command=lambda: [{window.destroy(), Install()}],
         )
-        _bt_aceptar.place(x=480, y=365)
-        ## imagen de windows
-        window_img = PhotoImage(file=r"images/windows.png")
-        window_label = Label(window, image=window_img, background="white")
-        window_label.place(x=15, y=400)
-        # mostrar la ventana al usuario
+        bt_aceptar.place(x=480, y=377)
+
+        # FUNCIONES PARA REALIZAR AL MOMENTO QUE EL USUARIO INTENTE CERRAR LA VENTANA
+        window.protocol("WM_DELETE_WINDOW", lambda: [{exit_app()}])
+
+        # MOSTRAR LA VENTANA CON TODA LA INFORMACIÓN & CON TODA LA CONFIGURACIÓN
         window.deiconify()
         window.mainloop()
 
 
-if __name__ == "__main__":
-    Main()
+# INICIAR LA APLICACIÓN EN EL SIGUIENTE APARTADO
+Home()
