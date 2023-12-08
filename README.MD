@@ -4,11 +4,11 @@
 
 - > La aplicación esta disponible para los siguientes sistemas operativos :
 
-  [![Windows](imagenes/windows.png)](https://www.microsoft.com/es-es/software-download/windows10)
+  [![Windows](https://i.imgur.com/KSsFaA9.png)](https://www.microsoft.com/es-es/software-download/windows10)
 
 - > Si quires apoyar a la creación de las aplicaciones y para futuros proyectos agradecería que donaras a mi link de PayPal :
 
-  [![Windows](paypal.png)](https://paypal.me/xrickytox?country.x=MX&locale.x=es_XC)
+  [![Windows](https://i.imgur.com/Qv7v1r7.png)](https://paypal.me/xrickytox?country.x=MX&locale.x=es_XC)
 
 #
 
