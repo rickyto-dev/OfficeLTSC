@@ -80,6 +80,19 @@ def instalar(win: any, progress: any, bt_inst: any, bt_reg: any, text_install: i
     bt_inst["cursor"] = "arrow"
     bt_reg["cursor"] = "arrow"
 
+    # DESACTIVAR EL CERRADO DE LA APLICACIÓN
+    win.protocol(
+        "WM_DELETE_WINDOW",
+        lambda: [
+            {
+                messagebox.showwarning(
+                    "Cuidado",
+                    "No se puede cancelar la inhalación por favor espere mientras termina la instalación",
+                )
+            }
+        ],
+    )
+
     def progress_chargee():
         """
         Esta función lo que hace es mover la barra de progreso añadiendo nuevos parámetros
@@ -153,12 +166,6 @@ def instalar(win: any, progress: any, bt_inst: any, bt_reg: any, text_install: i
                 "C:/Program Files/Microsoft Office/Office16/",
             )
 
-            # INFORMAR AL USUARIO QUE LA APLICACIÓN DE REACTIVADOR SOLO SE PUEDE USAR SI TIENE INTERNET
-            messagebox.showinfo(
-                "Información Reactivador",
-                "El programa de reactivador solo funciona si tienes internet ya que hace peticiones, de lo contrario el programa te arrogara un error al momento de querer abrirlo",
-            )
-
             # REMOVER LA CARPETA DONDE SE ENCONTRABA EL PROGRAMA
             shutil.rmtree(
                 "C:/Program Files/Microsoft Office/Office16/office-reactivador"
@@ -173,7 +180,7 @@ def instalar(win: any, progress: any, bt_inst: any, bt_reg: any, text_install: i
             ## ESCRITORIO
             _menu_escritorio = f"C:/Users/{_usuario}/OneDrive/Escritorio"
             _ESCRITORIO = os.path.join(_menu_escritorio, _nombre_app)
-            _escritorio_comando = f'mklink "{_ESCRITORIO}" "C:/Program Files/Microsoft Office/Office16/OfficeLTSC-Reactivador.exe" '
+            _escritorio_comando = f'mklink "{_ESCRITORIO}" f"C:/Users/{_usuario}/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/OfficeLTSC-Reactivador.exe" '
             subprocess.run(_escritorio_comando, shell=True)
 
             ## MENU APLICACIONES
@@ -187,6 +194,12 @@ def instalar(win: any, progress: any, bt_inst: any, bt_reg: any, text_install: i
                     _nombre_app,
                 ),
                 "C:/Program Files/Microsoft Office/Office16/OfficeLTSC-Reactivador.exe",
+            )
+
+            # INFORMAR AL USUARIO QUE LA APLICACIÓN DE REACTIVADOR SOLO SE PUEDE USAR SI TIENE INTERNET
+            messagebox.showinfo(
+                "Información Reactivador",
+                "El programa de reactivador solo funciona si tienes internet ya que hace peticiones, de lo contrario el programa te arrogara un error al momento de querer abrirlo",
             )
 
             Finish()
@@ -453,14 +466,7 @@ class Install:
         # * MOSTRAR LA VENTANA CON TODA LA CONFIGURACIÓN * #
         window.protocol(
             "WM_DELETE_WINDOW",
-            lambda: [
-                {
-                    messagebox.showwarning(
-                        "Cuidado",
-                        "No se puede cancelar la inhalación por favor espere mientras termina la instalación",
-                    )
-                }
-            ],
+            lambda: [{window.destroy(), Main()}],
         )
         window.deiconify()
         window.mainloop()
