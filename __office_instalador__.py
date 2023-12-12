@@ -180,7 +180,7 @@ def instalar(win: any, progress: any, bt_inst: any, bt_reg: any, text_install: i
             ## ESCRITORIO
             _menu_escritorio = f"C:/Users/{_usuario}/OneDrive/Escritorio"
             _ESCRITORIO = os.path.join(_menu_escritorio, _nombre_app)
-            _escritorio_comando = f'mklink "{_ESCRITORIO}" f"C:/Users/{_usuario}/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/OfficeLTSC-Reactivador.exe" '
+            _escritorio_comando = f'mklink "{_ESCRITORIO}" "C:/Users/{_usuario}/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/OfficeLTSC-Reactivador.exe" '
             subprocess.run(_escritorio_comando, shell=True)
 
             ## MENU APLICACIONES
