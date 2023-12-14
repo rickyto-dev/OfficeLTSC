@@ -1,7 +1,7 @@
 # PAQUETES QUE VAMOS A UTILIZAR
 from tkinter import Tk, PhotoImage, Label, Scrollbar, Text, ttk, messagebox
 import urllib.request
-import sys, os, shutil, getpass, zipfile, subprocess, winshell, time, socket
+import sys, os, shutil, getpass, zipfile, subprocess, winshell, time
 
 # GLOBALES
 descarga = 0
