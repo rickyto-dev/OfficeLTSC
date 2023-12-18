@@ -59,7 +59,7 @@ _name_application = "OfficeLTSC-Reactivador.lnk"
 # ? crear el acceso directo para el escritorio
 _desktop_menu = f"C:/Users/{_username}/OneDrive/Escritorio"
 _DESKTOP = os.path.join(_desktop_menu, _name_application)
-_create_lnk_desktop = f'mklink "{_DESKTOP}" "C:/Users/{_username}/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/OfficeLTSC-Reactivador.exe" '
+_create_lnk_desktop = f'mklink "{_DESKTOP}" "C:/ProgramData/Microsoft/Windows/Start Menu/Programs/OfficeLTSC-Reactivador.exe" '
 subprocess.run(_create_lnk_desktop, shell=True)
 
 # ? crear el acceso directo para el menu de aplicaciones
