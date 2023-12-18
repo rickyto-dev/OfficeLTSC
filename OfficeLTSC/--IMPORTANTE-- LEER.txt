@@ -27,5 +27,5 @@ Evita mover el instalador a otra carpeta para garantizar un rendimiento
 óptimo. La instalación y la reactivación requieren conexión a internet.
     															      
 Con la creatividad de RICKYTO DEV, esta aplicación te brinda una           
-experiencia de Office LTSC sin igual. ¡Descúbrelo por ti mismo y disfruta  
+experiencia de Office LTSC sin igual. ¡Descubre por ti mismo y disfruta  
 de un flujo de trabajo impecable!                                          
